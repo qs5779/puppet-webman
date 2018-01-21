@@ -1,0 +1,13 @@
+{
+  "name": "puppet-webman",
+  "version": "0.1.0",
+  "author": "Quien Sabe <que@wtfo-guru.com",
+  "summary": "Module to install a web based man page viewer",
+  "license": "Apache-2.0",
+  "source": "https://github.com/qs5779/puppet-webman",
+  "project_page": "https://github.com/qs5779/puppet-webman",
+  "issues_url": "https://github.com/qs5779/puppet-webman/issues",
+  "dependencies": [
+  ],
+  "data_provider": null
+}

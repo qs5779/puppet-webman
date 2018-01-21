@@ -1,0 +1,47 @@
+<html>
+<head>
+	<title>Man Page Lookup</title>
+	<style type="text/css">
+	<!-- //
+		a
+		{
+			font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+			font-size : 11px;
+			text-decoration: none;
+		}
+		a:hover
+		{
+			text-decoration: underline;
+		}
+		A:link		{ text-decoration: none; COLOR: #054281; }
+		A:visited	{ text-decoration: none; COLOR: #054281; }
+		A:active	{ text-decoration: none; COLOR: #054281; }
+		P          { FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,Helvetica,sans-serif; }
+		TD         { FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,Helvetica,sans-serif; }
+		TR         { FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,Helvetica,sans-serif; }
+		UL         { FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,Helvetica,sans-serif; }
+		LI         { FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,Helvetica,sans-serif; }
+		FORM       { FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,Helvetica,sans-serif; }
+		INPUT      { FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,Helvetica,sans-serif;}
+		SELECT     { FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,Helvetica,sans-serif;}
+		OPTION     { FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,Helvetica,sans-serif; }
+		TEXTAREA   { FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,Helvetica,sans-serif;}
+	// -->
+	</style>
+</head>
+<body>
+
+<?php
+
+	require('class.manpagelookup.php');
+	$mp = new ManPageLookUp();
+	$mp->useTimer(true);
+	$mp->useCaching(true);
+	$mp->setCacheDir('/var/cache/manpagelookup');
+	$mp->displayManPage();
+	$mp->displayVersion();
+
+?>
+
+</body>
+</html>

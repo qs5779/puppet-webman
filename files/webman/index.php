@@ -1,0 +1,10 @@
+<?php
+   if(file_exists('index.local'))
+   {
+      require_once('index.local');
+   }
+   else
+   {
+      require_once('index.template');
+   }
+?>
