@@ -37,8 +37,8 @@
 	$mp = new ManPageLookUp();
 	$mp->useTimer(true);
 	$mp->useCaching(true);
-<% if scope.lookupvar('webman::cache_directory') == :undef %>
-	$mp->setCacheDir(<%= scope.lookupvar('webman::cache_directory') -%>);
+<% if scope.lookupvar('webman::cachedirectory') == :undef %>
+	$mp->setCacheDir(<%= scope.lookupvar('webman::cachedirectory') -%>);
 <% end %>
 	$mp->displayManPage();
 	$mp->displayVersion();

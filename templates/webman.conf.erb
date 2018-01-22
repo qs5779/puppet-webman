@@ -1,17 +1,17 @@
 ### File managed by puppet
 ### Directory-based for the main server
 
-<Directory "<%= scope.lookupvar('webman::install::webman_directory') -%>">
+<Directory "<%= scope.lookupvar('webman::install::wmdirectory') -%>">
 
     AllowOverride None
     <IfVersion >= 2.4>
         Require all granted
-    </IfVersion
-    <IfVersion< < 2.4>
+    </IfVersion>
+    <IfVersion < 2.4>
         Order allow,deny
         Allow from all
-    </IfVersion
+    </IfVersion>
 
 </Directory>
 
-Alias /manpage <%= scope.lookupvar('webman::install::webman_directory') -%>
+Alias /manpage <%= scope.lookupvar('webman::install::wmdirectory') -%>
