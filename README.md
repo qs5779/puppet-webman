@@ -2,7 +2,7 @@
 
 ## Overview
 
-The module installs a directory with three files that provides a web bases
+The module installs a directory with three files that provides a web based
 man page viewer.
 
 Parameters to the main `::webman` class :
@@ -18,5 +18,6 @@ Parameters to the main `::webman` class :
 * `$cachedirectory`   : when specified pages are cached and their life managed via cron
 
 
-## Compatibily
+## Compatibility
 
+This initial version supports an apache web server on Debian or RedHat linux families.'
