@@ -16,11 +16,11 @@
 #
 class webman::install {
 
-  $webman_directory = "${webman::parent_directory}/webman"
+  $webman_directory = "${webman::parentdirectory}/webman"
 
   if $webman::ensure == 'present' {
-    if $webman::manage_parent {
-      file { $webman::parent_directory :
+    if $webman::manageparent {
+      file { $webman::parentdirectory :
         ensure => 'directory'
       }
     }

@@ -18,15 +18,35 @@
 #
 class webman (
   String $ensure = 'present',
-  String $owner = $webman::params::owner,
-  String $group = $webman::params::group,
-  String $service_name = $webman::params::service_name,
-  String $config_directory = $webman::params::config_directory,
-  String $parent_directory = '/var/www',
-  Boolean $manage_parent = false,
-  Integer $config_order_index = 66,
-  Optional String $cache_directory = undef,
+  String $parentdirectory = '/var/www',
+  Boolean $manageparent = false,
+  Integer $configorderindex = 66,
+  Optional String $owner,
+  Optional String $group,
+  Optional String $servicename,
+  Optional String $configdirectory,
+  Optional String $cachedirectory,
 ) inherits webman::params {
+
+  case $::osfamily {
+    'Debian': {
+      $cowner = 'www-data'
+      $cgroup = 'www-data'
+      $cconfigdirectory = '/etc/apache2/conf-available'
+      $cservicename = 'apache'
+    }
+    default:  {
+      $cowner = 'apache'
+      $cgroup = 'apache'
+      $cconfigdirectory = '/etc/httpd/conf.d'
+      $cservicename = 'httpd'
+    }
+  }
+
+  if $owner == undef { $owner = $cowner }
+  if $group == undef { $group = $cgroup }
+  if $configdirectory == undef { $configdirectory = $cconfigdirectory }
+  if $servicename == undef { $servicename = $cservicename }
 
   File {
     owner => $owner,

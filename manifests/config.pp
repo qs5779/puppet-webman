@@ -16,14 +16,14 @@
 #
 class webman::config {
 
-  if defined(Service["$webman::service_name"]) {
-    $webman_notify = [ Service["$webman::service_name"] ]
+  if defined(Service["$webman::servicename"]) {
+    $webman_notify = [ Service["$webman::servicename"] ]
   }
   else {
     $webman_notify = undef
   }
 
-  $webman_config = sprintf('%s/%02d-webman.conf', $webman::config_directory, $webman::config_order_index)
+  $webman_config = sprintf('%s/%02d-webman.conf', $webman::configdirectory, $webman::configorderindex)
 
   if $webman::ensure == 'present' {
 
