@@ -31,19 +31,19 @@ class webman::install {
     }
 
     file { "${wmdirectory}/class.manpagelookup.php":
-      ensure => 'directory',
+      ensure => 'file',
       mode   => '0644',
       source => 'puppet:///modules/webman/class.manpagelookup.php',
     }
 
     file { "${wmdirectory}/index.php":
-      ensure => 'directory',
+      ensure => 'file',
       mode   => '0644',
       source => 'puppet:///modules/webman/index.php',
     }
 
     file { "${wmdirectory}/index.template":
-      ensure  => 'directory',
+      ensure  => 'file',
       mode    => '0644',
       content => template('webman/index.template.erb'),
     }
