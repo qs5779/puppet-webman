@@ -3,7 +3,8 @@
 //
 // class.manpagelookup.php
 // version 1.3.0, 2nd January, 2003
-define('__VERSION__', '1.3.2'); // 20080620
+//define('__VERSION__', '1.3.2'); // 20080620
+define('__VERSION__', '1.3.3'); // 20180116 - php7 compatibility
 //
 // Description
 //
@@ -252,7 +253,7 @@ class manpageLookup
 		}
 		$this->output .= "</tr>\n</table>\n";
 		$this->output .= sprintf("<p>%d man page%s</p>\n", count($build), (count($build) == 1 ? '' : 's'));
-		
+
 		// create plain text version
 		if ($this->use_rawdata)
 		{
@@ -279,9 +280,9 @@ class manpageLookup
 			echo '<p>Cannot open a pipe to the man page.</p>';
 			return;
 		}
-	
+
 		$build = '';
-		
+
 		while (!feof($pipe))
 		{
 			$s = fgets($pipe, 1024);
@@ -358,21 +359,21 @@ class manpageLookup
 			}
 		}
 		pclose($pipe);
-		
+
 		// create formatted version
 		$this->output = '';
-		$this->output = ereg_replace("\n\n\n+", "\n\n", $build);
+		$this->output = preg_replace('/\n\n\n+/', "\n\n", $build);
 		if ($this->doemails)
 		{
-			$this->output = eregi_replace('[0-9a-z]([-_.]?[0-9a-z])*@[0-9a-z]([-.]?[0-9a-z])*\\.[a-z]{2,3}', '<a href="mailto:\\0">\\0</a>', $this->output);
+			$this->output = preg_replace('/[0-9a-z]([-_.]?[0-9a-z])*@[0-9a-z]([-.]?[0-9a-z])*\\.[a-z]{2,3}/i', '<a href="mailto:\\0">\\0</a>', $this->output);
 		}
-		
+
 		// create plain text version
 		if ($this->use_rawdata)
 		{
 			$this->getRawData();
 		}
-		
+
 		// cache
 		if ($this->use_caching)
 		{
@@ -400,12 +401,12 @@ class manpageLookup
 				return;
 			}
 		}
-		
+
 		if ($this->use_timer)
 		{
 			$this->startTimer();
 		}
-		
+
 		// setup the man page/search form
 		if ($this->command == '' && $this->display == '')
 		{
@@ -497,7 +498,7 @@ class manpageLookup
 		}
 	}
 
-	
+
 	//
 	// Caching functions
 	//
@@ -522,7 +523,7 @@ class manpageLookup
 	{
 		$this->cachedir = $dir . ($dir[strlen($dir)-1] != '/' ? '/' : '');
 	}
-	
+
 	/**
 	* @return string
 	* @param string $name
@@ -581,12 +582,12 @@ class manpageLookup
 		return false;
 	}
 
-	
+
 	//
 	// Timer functions
 	//
-	
-	
+
+
 	/**
 	* @return void
 	* @param bool $do
@@ -596,15 +597,15 @@ class manpageLookup
 	{
 		$this->use_timer = ($do == true ? true : false);
 	}
-	
+
 	/**
 	* @return void
 	* @desc Set the time for the start of the timer
 	*/
 	function startTimer()
 	{
-		list($usec, $sec) = explode(' ', microtime()); 
-		$this->starttime = ((float)$usec + (float)$sec); 
+		list($usec, $sec) = explode(' ', microtime());
+		$this->starttime = ((float)$usec + (float)$sec);
 	}
 
 	/**
@@ -613,8 +614,8 @@ class manpageLookup
 	*/
 	function endTimer()
 	{
-		list($usec, $sec) = explode(' ', microtime()); 
-		$this->endtime = ((float)$usec + (float)$sec); 
+		list($usec, $sec) = explode(' ', microtime());
+		$this->endtime = ((float)$usec + (float)$sec);
 	}
 
 	/**
