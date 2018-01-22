@@ -17,40 +17,108 @@
 # 20180121 - que - initial version
 #
 class webman (
-  String $ensure = 'present',
-  String $parentdirectory = '/var/www',
-  Boolean $manageparent = false,
-  Integer $configorderindex = 66,
-  Optional String $owner,
-  Optional String $group,
-  Optional String $servicename,
-  Optional String $configdirectory,
-  Optional String $cachedirectory,
-) inherits webman::params {
+  String $ensure                    = 'present',
+  String $parentdirectory           = '/var/www',
+  Boolean $manageparent             = false,
+  Integer $configorderindex         = 66,
+  Optional[String] $owner           = undef,
+  Optional[String] $group           = undef,
+  Optional[String] $servicename     = undef,
+  Optional[String] $configdirectory = undef,
+  Optional[String] $cachedirectory  = undef,
+) {
 
-  case $::osfamily {
-    'Debian': {
-      $cowner = 'www-data'
-      $cgroup = 'www-data'
-      $cconfigdirectory = '/etc/apache2/conf-available'
-      $cservicename = 'apache'
+  if $owner == undef {
+    case $::osfamily {
+      'Debian': {
+        $webmanowner = 'www-data'
+      }
+      default:  {
+        $webmanowner = 'apache'
+      }
+    }
+  }
+  else {
+    $webmanowner = $owner
+  }
+
+  if $group == undef {
+    case $::osfamily {
+      'Debian': {
+        $webmangroup = 'www-data'
+      }
+      default:  {
+        $webmangroup = 'apache'
+      }
+    }
+  }
+  else {
+    $webmangroup = $group
+  }
+
+  if $servicename == undef {
+    case $::osfamily {
+      'Debian': {
+        $webmanservicename = 'apache2'
+      }
+      default:  {
+        $webmanservicename = 'httpd'
+      }
+    }
+  }
+  else {
+    $webmanservicename = $group
+  }
+
+  if $configdirectory == undef {
+    if $servicename == undef {
+      case $::osfamily {
+        'Debian': {
+          $webmanconfigdirectory = '/etc/apache2/conf-available'
+        }
+        default:  {
+          $webmanconfigdirectory = '/etc/httpd/conf.d'
+        }
+      }
+    }
+    else {
+      case $servicename {
+        'apache2': {
+          $webmanconfigdirectory = '/etc/apache2/conf-available'
+        }
+        'httpd': {
+          $webmanconfigdirectory = '/etc/httpd/conf.d'
+        }
+        'nginx': {
+          if $::osfamily == 'Debian' {
+            $webmanconfigdirectory = '/etc/nginx/conf-available'
+          }
+          else {
+            fail("Cannot determine configdirectory for servicename ${servicename} on family ${::osfamily}")
+          }
+        }
+        default:  {
+          fail("Cannot determine configdirectory for servicename ${servicename}")
+        }
+      }
+    }
+  }
+  else {
+    $webmanconfigdirectory = $group
+  }
+
+  case $webmanservicename {
+    /^apache2|httpd$/: {
+      $wmconfigtmpl = 'webman/webman.conf.erb'
     }
     default:  {
-      $cowner = 'apache'
-      $cgroup = 'apache'
-      $cconfigdirectory = '/etc/httpd/conf.d'
-      $cservicename = 'httpd'
+      fail("No config template available for servicename ${webmanservicename} yet, sorry.")
     }
   }
 
-  if $owner == undef { $owner = $cowner }
-  if $group == undef { $group = $cgroup }
-  if $configdirectory == undef { $configdirectory = $cconfigdirectory }
-  if $servicename == undef { $servicename = $cservicename }
-
   File {
-    owner => $owner,
-    group => $group,
+    owner => $webmanowner,
+    group => $webmangroup,
   }
 
   include 'webman::install'

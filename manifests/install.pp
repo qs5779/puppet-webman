@@ -16,7 +16,7 @@
 #
 class webman::install {
 
-  $webman_directory = "${webman::parentdirectory}/webman"
+  $wmdirectory = "${webman::parentdirectory}/webman"
 
   if $webman::ensure == 'present' {
     if $webman::manageparent {
@@ -25,31 +25,31 @@ class webman::install {
       }
     }
 
-    file { $webman_directory:
-      ensure             => 'directory',
-      mode => '0755',
+    file { $wmdirectory:
+      ensure => 'directory',
+      mode   => '0755',
     }
 
-    file { "${webman_directory}/class.manpagelookup.php":
+    file { "${wmdirectory}/class.manpagelookup.php":
       ensure => 'directory',
       mode   => '0644',
       source => 'puppet:///modules/webman/class.manpagelookup.php',
     }
 
-    file { "${webman_directory}/index.php":
+    file { "${wmdirectory}/index.php":
       ensure => 'directory',
       mode   => '0644',
       source => 'puppet:///modules/webman/index.php',
     }
 
-    file { "${webman_directory}/index.template":
+    file { "${wmdirectory}/index.template":
       ensure  => 'directory',
       mode    => '0644',
       content => template('webman/index.template.erb'),
     }
   }
   else {
-    file { $webman_directory:
+    file { $wmdirectory:
       ensure => 'absent',
       force  => true,
     }
