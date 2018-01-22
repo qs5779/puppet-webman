@@ -23,7 +23,14 @@ class webman::config {
     $wmnotify = undef
   }
 
-  $wmconfig = sprintf('%s/%02d-webman.conf', $webman::webmanconfigdirectory, $webman::configorderindex)
+  $wmconfig = sprintf('%s/%02d-webman.conf', $webman::wmconfigdirectory, $webman::configorderindex)
+
+  if $webman::wmconfiglinkdirectory != undef {
+    $wmconfiglink = sprintf('%s/%02d-webman.conf', $webman::wmconfiglinkdirectory, $webman::configorderindex)
+  }
+  else {
+    $wmconfiglink = undef
+  }
 
   if $webman::ensure == 'present' {
 
@@ -33,11 +40,26 @@ class webman::config {
       content => template($webman::wmconfigtmpl),
       notify  => $wmnotify,
     }
+
+    if $wmconfiglink != undef {
+      file { $wmconfiglink:
+        ensure => 'link',
+        target => $wmconfig,
+        notify  => $wmnotify,
+      }
+    }
   }
   else {
     file { $wmconfig:
       ensure => 'absent',
       notify => $wmnotify,
+    }
+
+    if $wmconfiglink != undef {
+      file { $wmconfiglink:
+        ensure => 'absent',
+        notify  => $wmnotify,
+      }
     }
   }
 

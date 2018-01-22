@@ -67,31 +67,36 @@ class webman (
     }
   }
   else {
-    $webmanservicename = $group
+    $webmanservicename = $servicename
   }
 
   if $configdirectory == undef {
     if $servicename == undef {
       case $::osfamily {
         'Debian': {
-          $webmanconfigdirectory = '/etc/apache2/conf-available'
+          $wmconfigdirectory = '/etc/apache2/conf-available'
+          $wmconfiglinkdirectory = '/etc/apache2/conf-enabled'
         }
         default:  {
-          $webmanconfigdirectory = '/etc/httpd/conf.d'
+          $wmconfigdirectory = '/etc/httpd/conf.d'
+          $wmconfiglinkdirectory = undef
         }
       }
     }
     else {
       case $servicename {
         'apache2': {
-          $webmanconfigdirectory = '/etc/apache2/conf-available'
+          $wmconfigdirectory = '/etc/apache2/conf-available'
+          $wmconfiglinkdirectory = '/etc/apache2/conf-enabled'
         }
         'httpd': {
-          $webmanconfigdirectory = '/etc/httpd/conf.d'
+          $wmconfigdirectory = '/etc/httpd/conf.d'
+          $wmconfiglinkdirectory = undef
         }
         'nginx': {
           if $::osfamily == 'Debian' {
-            $webmanconfigdirectory = '/etc/nginx/conf-available'
+            $wmconfigdirectory = '/etc/nginx/conf-available'
+            $wmconfiglinkdirectory = '/etc/nginx/conf-enabled'
           }
           else {
             fail("Cannot determine configdirectory for servicename ${servicename} on family ${::osfamily}")
@@ -104,7 +109,8 @@ class webman (
     }
   }
   else {
-    $webmanconfigdirectory = $group
+    $wmconfigdirectory = $configdirectory
+    $wmconfiglinkdirectory = undef
   }
 
   case $webmanservicename {
