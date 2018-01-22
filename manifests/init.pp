@@ -25,6 +25,7 @@ class webman (
   String $parent_directory = '/var/www',
   Boolean $manage_parent = false,
   Integer $config_order_index = 66,
+  Optional String $cache_directory = undef,
 ) inherits webman::params {
 
   File {
