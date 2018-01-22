@@ -15,18 +15,18 @@
 # 20180121 - que - initial version
 #
 class webman::params {
-  case $facts['os']['family'] {
+  case $::osfamily {
     'Debian': {
       $owner = 'www-data'
       $group = 'www-data'
-      $service_name = 'apache',
-      $config_directory = '/etc/apache2/conf-enabled',
+      $service_name = 'apache'
+      $config_directory = '/etc/apache2/conf-available'
     }
     default:  {
       $owner = 'apache'
       $group = 'apache'
       $service_name = 'httpd'
-      $config_directory = '/etc/httpd/conf.d',
+      $config_directory = '/etc/httpd/conf.d'
     }
   }
 }

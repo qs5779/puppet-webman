@@ -8,6 +8,7 @@
   "project_page": "https://github.com/qs5779/puppet-webman",
   "issues_url": "https://github.com/qs5779/puppet-webman/issues",
   "dependencies": [
+        {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
   ],
   "data_provider": null
 }

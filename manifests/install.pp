@@ -27,9 +27,23 @@ class webman::install {
 
     file { $webman_directory:
       ensure             => 'directory',
-      source_permissions => 'use_when_creating',
-      source             => 'puppet:///modules/webman/webman',
-      recurse            => true,
+      mode => '0755',
+    }
+
+    file { "${webman_directory}/class.manpagelookup.php":
+      ensure => 'directory',
+      mode   => '0644',
+    }
+
+    file { "${webman_directory}/index.php":
+      ensure => 'directory',
+      mode   => '0644',
+    }
+
+    file { "${webman_directory}/index.template":
+      ensure  => 'directory',
+      mode    => '0644',
+      replace => 'no',
     }
   }
   else {

@@ -16,21 +16,28 @@
 #
 class webman::config {
 
-  $webman_config = sprintf("%s/%02d-webman.conf", $webman::config_directory, $webman::config_order_index)
+  if defined(Service["$webman::service_name"]) {
+    $webman_notify = [ Service["$webman::service_name"] ]
+  }
+  else {
+    $webman_notify = undef
+  }
+
+  $webman_config = sprintf('%s/%02d-webman.conf', $webman::config_directory, $webman::config_order_index)
 
   if $webman::ensure == 'present' {
 
     file { $webman_config:
       ensure  => 'present',
-      mode    => '0644'
+      mode    => '0644',
       content => template('webman/webman.conf.erb'),
-      notify  => Service[$service_name],
+      notify  => $webman_notify,
     }
   }
   else {
     file { $webman_config:
       ensure => 'absent',
-      notify => Service[$service_name],
+      notify => $webman_notify,
     }
   }
 
